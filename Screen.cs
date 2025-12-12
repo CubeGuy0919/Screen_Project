@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,17 +19,25 @@ namespace ConsoleAppScreen.Models
         /// <param name="sign">A téglalap rajzolásához használt karakter</param>
         static public void DrawRectangle(byte x, byte y, byte width, byte height, char sign = '*')
         {
-            // TODO : (Jancsi) Téglalap rajzolásának implementációja a képernyőn
+            // TODO : () Téglalap rajzolásának implementációja a képernyőn
 
-            for (int i = 0; i < width; i++) 
+
+            for (int i = 0; i <= width; i++)
             {
-                Console.Write(sign);
+                for (int j = 0; j <= height; j++)
+                {
+                    if (j == 0 || j == height || i == 0 || i == width)
+                    {
+                        Console.SetCursorPosition(x + i, y + j);
+                        Console.WriteLine(sign);
+                    }
+
+                }
             }
-            for (int i = 0; i != height; i++)
-            {
-                Console.WriteLine(sign + width * "");
-            }
+
+
         }
+
 
         /// <summary>
         /// Kitöltött téglalap rajzolása a képernyőn a megadott koordináták és méretek alapján.
@@ -40,8 +49,27 @@ namespace ConsoleAppScreen.Models
         /// <param name="sign">A kitöltéshez használt karakter</param>
         static public void FillRectangle(byte x, byte y, byte width, byte height, char sign = '■')
         {
-            // TODO : (Juliska) Kitöltött téglalap rajzolásának implementációja a képernyőn
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < width; i++)
+            {
+                sb.Append(sign);
+
+            }
+            for (int s = 0; s < height; s++)
+            {
+                Console.SetCursorPosition(x, y + s);
+                Console.WriteLine(sb);
+            }
+            for (int s = 0; s < height; s++)
+        {
+
+            Console.WriteLine(sb);
         }
+
+        }
+
+
 
         /// <summary>
         /// Vonal rajzolása a képernyőn a megadott kezdő és végpontok alapján.
@@ -53,7 +81,8 @@ namespace ConsoleAppScreen.Models
         /// <param name="sign">A vonal rajzolásához használt karakter</param>
         static public void DrawLine(byte x1, byte y1, byte x2, byte y2, char sign = '*')
         {
-            // TODO : (jancsi) Vonal rajzolásának implementációja a képernyőn
+            // TODO : () Vonal rajzolásának implementációja a képernyőn
+            Vector2 pozicio1;
         }
 
         /// <summary>
@@ -64,8 +93,20 @@ namespace ConsoleAppScreen.Models
         /// <returns>A szöveg középre igazított változata</returns>
         static public string AlignTextCenter(string text, int width)
         {
-            // TODO : (Juliska) Szöveg középre igazításának implementációja
-            throw new NotImplementedException();
+            // TODO : (Szabolcs) Szöveg középre igazításának implementációja
+            throw new NotImplementedException("meg nincs kesz");
+            {
+                if (string.IsNullOrEmpty(text))
+                    return new string(' ', width);
+
+                if (text.Length >= width)
+                    return text;
+
+                int leftPadding = (width - text.Length) / 2;
+                int rightPadding = width - text.Length - leftPadding;
+
+                return new string(' ', leftPadding) + text + new string(' ', rightPadding);
+            }
         }
 
         /// <summary>
@@ -76,7 +117,7 @@ namespace ConsoleAppScreen.Models
         /// <returns>A két szöveg karaktereinek keverésével elkészített szöveg</returns>
         public static string MixedStrings(string textA, string textB)
         {
-            // TODO : (Jancsi) Két szöveg keverésének implementációja
+            // TODO : () Két szöveg keverésének implementációja
             // 1. példa:
             // textA = "Hello"
             // textB = "World"
@@ -86,10 +127,10 @@ namespace ConsoleAppScreen.Models
             // textA = "abcd"
             // textB = "12345"
             // Kimenet: a1b2c3d45
-            throw new NotImplementedException();
+            throw new NotImplementedException("meg nincs kesz");
         }
 
-        // TODO : (Juliska) Két szöveg ismételt váltakozásának implementációja
+        // TODO : () Két szöveg ismételt váltakozásának implementációja
         /// <summary>
         /// Egymás után váltakozva szereplő szövegeket fűz egybe.
         /// </summary>
@@ -98,14 +139,20 @@ namespace ConsoleAppScreen.Models
         /// <param name="iteration">A fűzések ismétlési száma.</param>
         /// <returns>A két szöveg ismételt váltakozásával elkészített szöveg</returns>
         public static string RepeatedStrings(string textA, string textB, int iteration)
-        {
-            // példa:
-            // textA = "Hi"
-            // textB = "There"
-            // iteration = 3
-            // Kimenet: HiThereHiThereHiThere
+{
+    if (iteration <= 0)
+        return string.Empty;
 
-            throw new NotImplementedException();
-        }
+    var sb = new StringBuilder();
+
+    for (int i = 0; i < iteration; i++)
+    {
+        sb.Append(textA);
+        sb.Append(textB);
+    }
+
+    return sb.ToString();
+}
+        
     }
 }
