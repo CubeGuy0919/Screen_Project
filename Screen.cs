@@ -38,6 +38,7 @@ namespace ConsoleAppScreen.Models
 
         }
 
+        
 
         /// <summary>
         /// Kitöltött téglalap rajzolása a képernyőn a megadott koordináták és méretek alapján.
@@ -49,7 +50,9 @@ namespace ConsoleAppScreen.Models
         /// <param name="sign">A kitöltéshez használt karakter</param>
         static public void FillRectangle(byte x, byte y, byte width, byte height, char sign = '■')
         {
-
+            Console.WriteLine("\n");
+            Console.WriteLine("\n");
+            Console.WriteLine("\n");
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < width; i++)
             {
@@ -62,10 +65,10 @@ namespace ConsoleAppScreen.Models
                 Console.WriteLine(sb);
             }
             for (int s = 0; s < height; s++)
-        {
+            {
 
-            Console.WriteLine(sb);
-        }
+                Console.WriteLine(sb);
+            }
 
         }
 
@@ -83,6 +86,16 @@ namespace ConsoleAppScreen.Models
         {
             // TODO : () Vonal rajzolásának implementációja a képernyőn
             Vector2 pozicio1;
+            
+            /*
+            //Console.SetCursorPosition(x2);
+            int position = 0;
+            while (position < x1)
+            {
+                for (int i = 0; i< x1) { }
+                Console.WriteLine(sign);
+            }
+            */
         }
 
         /// <summary>
@@ -93,8 +106,11 @@ namespace ConsoleAppScreen.Models
         /// <returns>A szöveg középre igazított változata</returns>
         static public string AlignTextCenter(string text, int width)
         {
+            Console.WriteLine("\n");
+            Console.WriteLine("\n");
+            Console.WriteLine("\n");
             // TODO : (Szabolcs) Szöveg középre igazításának implementációja
-            throw new NotImplementedException("meg nincs kesz");
+            //throw new NotImplementedException("meg nincs kesz");
             {
                 if (string.IsNullOrEmpty(text))
                     return new string(' ', width);
@@ -127,7 +143,50 @@ namespace ConsoleAppScreen.Models
             // textA = "abcd"
             // textB = "12345"
             // Kimenet: a1b2c3d45
-            throw new NotImplementedException("meg nincs kesz");
+            char[] atalakitotttextA = textA.ToCharArray();
+            char[] atalakitotttextB = textB.ToCharArray();
+
+            StringBuilder osszefuzottSzoveg = new StringBuilder();
+
+            byte index = 0;
+            int i = 0;
+            while(i < atalakitotttextA.Length & i < atalakitotttextA.Length)
+            {
+                if (index % 2 == 0 & index !< atalakitotttextA.Length)
+                {
+                    osszefuzottSzoveg.Append(atalakitotttextA[i].ToString());
+                    i++;
+                }
+                else if (index % 2 == 1 & index! < atalakitotttextA.Length)
+                {
+                    osszefuzottSzoveg.Append(atalakitotttextB[i].ToString());
+                    i++;
+                }
+                else
+                {
+                    osszefuzottSzoveg.Append(atalakitotttextB[i].ToString());
+                    i++;
+                }
+            }
+            //for (int i = 0; i < atalakitotttextA.Length; i++)
+            //{
+            //    osszefuzottSzoveg[index] = atalakitotttextA[index];
+            //    index += 2;
+            //}
+            //int index2 = 1;
+            //int aktualisIndexatalakitotttextB = 0;
+            //for (int i = 0; i < atalakitotttextA.Length; i++)
+            //{
+            //    osszefuzottSzoveg[index2] = atalakitotttextB[index2];
+            //    index2 += 2;
+            //    aktualisIndexatalakitotttextB = i;
+            //}
+            //for (int i = aktualisIndexatalakitotttextB; i < atalakitotttextB.Length; i++)
+            //{
+            //    osszefuzottSzoveg.Append(atalakitotttextB[i]);
+            //}
+
+            return osszefuzottSzoveg.ToString();
         }
 
         // TODO : () Két szöveg ismételt váltakozásának implementációja
@@ -139,20 +198,20 @@ namespace ConsoleAppScreen.Models
         /// <param name="iteration">A fűzések ismétlési száma.</param>
         /// <returns>A két szöveg ismételt váltakozásával elkészített szöveg</returns>
         public static string RepeatedStrings(string textA, string textB, int iteration)
-{
-    if (iteration <= 0)
-        return string.Empty;
+        {
+            if (iteration <= 0)
+                return string.Empty;
 
-    var sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-    for (int i = 0; i < iteration; i++)
-    {
-        sb.Append(textA);
-        sb.Append(textB);
-    }
+            for (int i = 0; i < iteration; i++)
+            {
+                sb.Append(textA);
+                sb.Append(textB);
+            }
 
-    return sb.ToString();
-}
-        
+            return sb.ToString();
+        }
+
     }
 }
