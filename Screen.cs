@@ -19,7 +19,22 @@ namespace ConsoleAppScreen.Models
         /// <param name="sign">A téglalap rajzolásához használt karakter</param>
         static public void DrawRectangle(byte x, byte y, byte width, byte height, char sign = '*')
         {
-            // TODO : () Téglalap rajzolásának implementációja a képernyőn
+            // TODO : (Dani) Exceptions Kezelése
+
+            if (width < 0)
+            {
+                throw new ArgumentException("Nem lehet 0 'width' argument érték!");
+            }
+            if (height < 0)
+            {
+                throw new ArgumentException("Nem lehet 0 'height' argument érték!");
+            }
+            if (x + width >= Console.WindowWidth || y + height >= Console.WindowHeight)
+            {
+                throw new ArgumentException("A téglalap kilóg a képernyőről!");
+            }
+
+            // TODO : (Dominik) Téglalap rajzolásának implementációja a képernyőn
 
 
             for (int i = 0; i <= width; i++)
@@ -33,12 +48,11 @@ namespace ConsoleAppScreen.Models
                     }
 
                 }
-            }
-
+            }          
 
         }
 
-        
+
 
         /// <summary>
         /// Kitöltött téglalap rajzolása a képernyőn a megadott koordináták és méretek alapján.
@@ -50,9 +64,23 @@ namespace ConsoleAppScreen.Models
         /// <param name="sign">A kitöltéshez használt karakter</param>
         static public void FillRectangle(byte x, byte y, byte width, byte height, char sign = '■')
         {
-            Console.WriteLine("\n");
-            Console.WriteLine("\n");
-            Console.WriteLine("\n");
+            // TODO : (Dani) Exceptions Kezelése
+
+            if (width < 0)
+            {
+                throw new ArgumentException("Nem lehet 0 'width' argument érték!");
+            }
+            if (height < 0)
+            {
+                throw new ArgumentException("Nem lehet 0 'height' argument érték!");
+            }
+            if (x + width >= Console.WindowWidth || y + height >= Console.WindowHeight)
+            {
+                throw new ArgumentException("A téglalap kilóg a képernyőről!");
+            }
+
+            // TODO : (Dominik) Kitöltött téglalap rajzolásának implementációja a képernyőn
+
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < width; i++)
             {
@@ -63,12 +91,7 @@ namespace ConsoleAppScreen.Models
             {
                 Console.SetCursorPosition(x, y + s);
                 Console.WriteLine(sb);
-            }
-            for (int s = 0; s < height; s++)
-            {
-
-                Console.WriteLine(sb);
-            }
+            }                     
 
         }
 
@@ -84,18 +107,59 @@ namespace ConsoleAppScreen.Models
         /// <param name="sign">A vonal rajzolásához használt karakter</param>
         static public void DrawLine(byte x1, byte y1, byte x2, byte y2, char sign = '*')
         {
-            // TODO : () Vonal rajzolásának implementációja a képernyőn
-            Vector2 pozicio1;
-            
-            /*
-            //Console.SetCursorPosition(x2);
-            int position = 0;
-            while (position < x1)
+            // TODO : (Dani) Vonal rajzolásának implementációja a képernyőn
+            if (x1 + 1 >= Console.WindowWidth ||y1 + 1 >= Console.WindowHeight)
             {
-                for (int i = 0; i< x1) { }
-                Console.WriteLine(sign);
+                throw new ArgumentException("A vonal kezdőpontja kilóg!");
+            }   
+            // vízszintes
+            else if (y1 == y2)
+            {
+                int start = Math.Min(x1, x2);
+                int end = Math.Max(x1, x2);
+
+                for (int x = start; x <= end; x++)
+                {
+                    Console.SetCursorPosition(x, y1);
+                    Console.Write(sign);
+                }
             }
-            */
+            // függőleges
+            else if (x1 == x2)
+            {
+                int start = Math.Min(y1, y2);
+                int end = Math.Max(y1, y2);
+
+                for (int y = start; y <= end; y++)
+                {
+                    Console.SetCursorPosition(x1, y);
+                    Console.Write(sign);
+                }
+            }
+            // átló (45°-os)
+            else if (Math.Abs(x2 - x1) == Math.Abs(y2 - y1))
+            {
+                int steps = Math.Abs(x2 - x1);
+
+                int xStep = x2 > x1 ? 1 : -1;
+                int yStep = y2 > y1 ? 1 : -1;
+
+                int x = Convert.ToInt32(x1);
+                int y = Convert.ToInt32(y1);
+
+                for (int i = 0; i <= steps; i++)
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.Write(sign);
+                    x += xStep;
+                    y += yStep;
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Csak vízszintes, függőleges vagy 45°-os átló rajzolható!");
+            }
+        
         }
 
         /// <summary>
@@ -106,23 +170,29 @@ namespace ConsoleAppScreen.Models
         /// <returns>A szöveg középre igazított változata</returns>
         static public string AlignTextCenter(string text, int width)
         {
-            Console.WriteLine("\n");
-            Console.WriteLine("\n");
-            Console.WriteLine("\n");
-            // TODO : (Szabolcs) Szöveg középre igazításának implementációja
-            //throw new NotImplementedException("meg nincs kesz");
+            // TODO (Dani) : Exceptions Kezelése
+
+            if (text == null)
             {
-                if (string.IsNullOrEmpty(text))
-                    return new string(' ', width);
+                throw new ArgumentException("A szöveg nem lehet null!");
+            }
+            else if (text == "")
+            {
+                throw new ArgumentException("A szöveg nem lehet üres (\"\") !");
+            }
 
-                if (text.Length >= width)
-                    return text;
+            // TODO : (Dominik) Szöveg középre igazításának implementációja
 
+            else if (text.Length >= width)
+                return text;
+            else
+            {
                 int leftPadding = (width - text.Length) / 2;
                 int rightPadding = width - text.Length - leftPadding;
 
                 return new string(' ', leftPadding) + text + new string(' ', rightPadding);
-            }
+            }          
+            
         }
 
         /// <summary>
@@ -133,7 +203,8 @@ namespace ConsoleAppScreen.Models
         /// <returns>A két szöveg karaktereinek keverésével elkészített szöveg</returns>
         public static string MixedStrings(string textA, string textB)
         {
-            // TODO : () Két szöveg keverésének implementációja
+            // TODO : (Dani) Két szöveg keverésének implementációja
+
             // 1. példa:
             // textA = "Hello"
             // textB = "World"
@@ -143,53 +214,39 @@ namespace ConsoleAppScreen.Models
             // textA = "abcd"
             // textB = "12345"
             // Kimenet: a1b2c3d45
-            char[] atalakitotttextA = textA.ToCharArray();
-            char[] atalakitotttextB = textB.ToCharArray();
 
-            StringBuilder osszefuzottSzoveg = new StringBuilder();
-
-            byte index = 0;
-            int i = 0;
-            while(i < atalakitotttextA.Length & i < atalakitotttextA.Length)
+            if (textA == null || textB == null)
             {
-                if (index % 2 == 0 & index !< atalakitotttextA.Length)
-                {
-                    osszefuzottSzoveg.Append(atalakitotttextA[i].ToString());
-                    i++;
-                }
-                else if (index % 2 == 1 & index! < atalakitotttextA.Length)
-                {
-                    osszefuzottSzoveg.Append(atalakitotttextB[i].ToString());
-                    i++;
-                }
-                else
-                {
-                    osszefuzottSzoveg.Append(atalakitotttextB[i].ToString());
-                    i++;
-                }
+                throw new ArgumentException("A szöveg nem lehet null!");
             }
-            //for (int i = 0; i < atalakitotttextA.Length; i++)
-            //{
-            //    osszefuzottSzoveg[index] = atalakitotttextA[index];
-            //    index += 2;
-            //}
-            //int index2 = 1;
-            //int aktualisIndexatalakitotttextB = 0;
-            //for (int i = 0; i < atalakitotttextA.Length; i++)
-            //{
-            //    osszefuzottSzoveg[index2] = atalakitotttextB[index2];
-            //    index2 += 2;
-            //    aktualisIndexatalakitotttextB = i;
-            //}
-            //for (int i = aktualisIndexatalakitotttextB; i < atalakitotttextB.Length; i++)
-            //{
-            //    osszefuzottSzoveg.Append(atalakitotttextB[i]);
-            //}
+            else if (textA == "" || textB == "")
+            {
+                throw new ArgumentException("A szöveg nem lehet üres (\"\")!");
+            }
+            else
+            {
+                StringBuilder textMixed = new StringBuilder();
+                int textLength = Math.Max(textA.Length, textB.Length);
 
-            return osszefuzottSzoveg.ToString();
+                for (int i = 0; i < textLength; i++)
+                {
+                    if (i < textA.Length)
+                    {
+                        textMixed.Append(textA[i]);
+                    }
+                    if (i < textB.Length)
+                    {
+                        textMixed.Append(textB[i]);
+                    }
+                }
+
+                return textMixed.ToString();
+            }
+            
         }
 
-        // TODO : () Két szöveg ismételt váltakozásának implementációja
+        // TODO : (Dani) Két szöveg ismételt váltakozásának implementációja
+
         /// <summary>
         /// Egymás után váltakozva szereplő szövegeket fűz egybe.
         /// </summary>
@@ -199,18 +256,31 @@ namespace ConsoleAppScreen.Models
         /// <returns>A két szöveg ismételt váltakozásával elkészített szöveg</returns>
         public static string RepeatedStrings(string textA, string textB, int iteration)
         {
-            if (iteration <= 0)
-                return string.Empty;
-
-            var sb = new StringBuilder();
-
-            for (int i = 0; i < iteration; i++)
+            if (textA == null || textB == null)
             {
-                sb.Append(textA);
-                sb.Append(textB);
+                throw new ArgumentException("A szöveg nem lehet null!");
             }
+            else if (textA == "" || textB == "")
+            {
+                throw new ArgumentException("A szöveg nem lehet üres (\"\")!");
+            }
+            else if (iteration <= 3)
+            {
+                throw new ArgumentException("Az 'iteration' argumentnek nagyobbnak kell lennie 2-nél!");
+            }
+            else
+            {
+                StringBuilder textRepeated = new StringBuilder();
 
-            return sb.ToString();
+                for (int i = 0; i < iteration; i++)
+                {
+                    textRepeated.Append(textA);
+                    textRepeated.Append(textB);
+                }
+
+                return textRepeated.ToString();
+            }
+                
         }
 
     }
